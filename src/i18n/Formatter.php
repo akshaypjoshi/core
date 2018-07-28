@@ -30,7 +30,7 @@ use yii\helpers\HtmlPurifier;
  * by configuring [[dateFormat]], one may control how [[asDate()]] formats the value into a date string.
  *
  * Formatter is configured as an application component in [[\yii\base\Application]] by default.
- * You can access that instance via `Yii::$app->formatter`.
+ * You can access that instance via `Yii::getApp()->formatter`.
  *
  * The Formatter class is designed to format values according to a [[locale]]. For this feature to work
  * the [PHP intl extension](http://php.net/manual/en/book.intl.php) has to be installed.
@@ -376,10 +376,10 @@ class Formatter extends Component
     public function init()
     {
         if ($this->timeZone === null) {
-            $this->timeZone = Yii::$app->timeZone;
+            $this->timeZone = Yii::getApp()->timeZone;
         }
         if ($this->locale === null) {
-            $this->locale = Yii::$app->language;
+            $this->locale = Yii::getApp()->language;
         }
         if ($this->booleanFormat === null) {
             $this->booleanFormat = [Yii::t('yii', 'No', [], $this->locale), Yii::t('yii', 'Yes', [], $this->locale)];
