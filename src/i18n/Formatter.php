@@ -14,6 +14,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use IntlDateFormatter;
 use NumberFormatter;
+use yii\di\Initable;
 use yii\helpers\Yii;
 use yii\base\Component;
 use yii\exceptions\InvalidArgumentException;
@@ -45,7 +46,7 @@ use yii\helpers\HtmlPurifier;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class Formatter extends Component
+class Formatter extends Component implements Initable
 {
     /**
      * @since 2.0.13
@@ -369,6 +370,19 @@ class Formatter extends Component
      */
     private $_unitMessages = [];
 
+    /**
+     * @var \yii\base\Application
+     */
+    private $app;
+
+    /**
+     * Formatter constructor.
+     * @param \yii\base\Application $app
+     */
+    public function __construct(\yii\base\Application $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * {@inheritdoc}
@@ -376,10 +390,10 @@ class Formatter extends Component
     public function init()
     {
         if ($this->timeZone === null) {
-            $this->timeZone = Yii::getApp()->timeZone;
+            $this->timeZone = $this->app->timeZone;
         }
         if ($this->locale === null) {
-            $this->locale = Yii::getApp()->language;
+            $this->locale = $this->app->language;
         }
         if ($this->booleanFormat === null) {
             $this->booleanFormat = [Yii::t('yii', 'No', [], $this->locale), Yii::t('yii', 'Yes', [], $this->locale)];
