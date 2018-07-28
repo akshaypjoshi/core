@@ -14,7 +14,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use IntlDateFormatter;
 use NumberFormatter;
-use yii\di\Initable;
+use yii\base\Application;
 use yii\helpers\Yii;
 use yii\base\Component;
 use yii\exceptions\InvalidArgumentException;
@@ -46,7 +46,7 @@ use yii\helpers\HtmlPurifier;
  * @author Carsten Brandt <mail@cebe.cc>
  * @since 2.0
  */
-class Formatter extends Component implements Initable
+class Formatter extends Component
 {
     /**
      * @since 2.0.13
@@ -78,21 +78,21 @@ class Formatter extends Component implements Initable
      * Defaults to `'<span class="not-set">(not set)</span>'`, where `(not set)`
      * will be translated according to [[locale]].
      */
-    public $nullDisplay;
+    protected $nullDisplay;
     /**
      * @var array the text to be displayed when formatting a boolean value. The first element corresponds
      * to the text displayed for `false`, the second element for `true`.
      * Defaults to `['No', 'Yes']`, where `Yes` and `No`
      * will be translated according to [[locale]].
      */
-    public $booleanFormat;
+    protected $booleanFormat;
     /**
      * @var string the locale ID that is used to localize the date and number formatting.
      * For number and date formatting this is only effective when the
      * [PHP intl extension](http://php.net/manual/en/book.intl.php) is installed.
      * If not set, [[\yii\base\Application::language]] will be used.
      */
-    public $locale;
+    protected $locale;
     /**
      * @var string the time zone to use for formatting time and date values.
      *
@@ -104,7 +104,7 @@ class Formatter extends Component implements Initable
      * Note that the default time zone for input data is assumed to be UTC by default if no time zone is included in the input date value.
      * If you store your data in a different time zone in the database, you have to adjust [[defaultTimeZone]] accordingly.
      */
-    public $timeZone;
+    protected $timeZone;
     /**
      * @var string the time zone that is assumed for input values if they do not include a time zone explicitly.
      *
@@ -118,7 +118,7 @@ class Formatter extends Component implements Initable
      *
      * @since 2.0.1
      */
-    public $defaultTimeZone = 'UTC';
+    protected $defaultTimeZone = 'UTC';
     /**
      * @var string the default format string to be used to format a [[asDate()|date]].
      * This can be "short", "medium", "long", or "full", which represents a preset format of different lengths.
@@ -134,7 +134,7 @@ class Formatter extends Component implements Initable
      * 'php:m/d/Y' // the same date in PHP format
      * ```
      */
-    public $dateFormat = 'medium';
+    protected $dateFormat = 'medium';
     /**
      * @var string the default format string to be used to format a [[asTime()|time]].
      * This can be "short", "medium", "long", or "full", which represents a preset format of different lengths.
@@ -150,7 +150,7 @@ class Formatter extends Component implements Initable
      * 'php:H:i:s' // the same time in PHP format
      * ```
      */
-    public $timeFormat = 'medium';
+    protected $timeFormat = 'medium';
     /**
      * @var string the default format string to be used to format a [[asDatetime()|date and time]].
      * This can be "short", "medium", "long", or "full", which represents a preset format of different lengths.
@@ -167,7 +167,7 @@ class Formatter extends Component implements Initable
      * 'php:m/d/Y H:i:s' // the same date and time in PHP format
      * ```
      */
-    public $datetimeFormat = 'medium';
+    protected $datetimeFormat = 'medium';
     /**
      * @var \IntlCalendar|int|null the calendar to be used for date formatting. The value of this property will be directly
      * passed to the [constructor of the `IntlDateFormatter` class](http://php.net/manual/en/intldateformatter.create.php).
@@ -198,19 +198,19 @@ class Formatter extends Component implements Initable
      * @see http://php.net/manual/en/class.intlcalendar.php
      * @since 2.0.7
      */
-    public $calendar;
+    protected $calendar;
     /**
      * @var string the character displayed as the decimal point when formatting a number.
      * If not set, the decimal separator corresponding to [[locale]] will be used.
      * If [PHP intl extension](http://php.net/manual/en/book.intl.php) is not available, the default value is '.'.
      */
-    public $decimalSeparator;
+    protected $decimalSeparator;
     /**
      * @var string the character displayed as the thousands separator (also called grouping separator) character when formatting a number.
      * If not set, the thousand separator corresponding to [[locale]] will be used.
      * If [PHP intl extension](http://php.net/manual/en/book.intl.php) is not available, the default value is ','.
      */
-    public $thousandSeparator;
+    protected $thousandSeparator;
     /**
      * @var array a list of name value pairs that are passed to the
      * intl [NumberFormatter::setAttribute()](http://php.net/manual/en/numberformatter.setattribute.php) method of all
@@ -229,7 +229,7 @@ class Formatter extends Component implements Initable
      * ]
      * ```
      */
-    public $numberFormatterOptions = [];
+    protected $numberFormatterOptions = [];
     /**
      * @var array a list of name value pairs that are passed to the
      * intl [NumberFormatter::setTextAttribute()](http://php.net/manual/en/numberformatter.settextattribute.php) method of all
@@ -247,7 +247,7 @@ class Formatter extends Component implements Initable
      * ]
      * ```
      */
-    public $numberFormatterTextOptions = [];
+    protected $numberFormatterTextOptions = [];
     /**
      * @var array a list of name value pairs that are passed to the
      * intl [NumberFormatter::setSymbol()](http://php.net/manual/en/numberformatter.setsymbol.php) method of all
@@ -267,19 +267,19 @@ class Formatter extends Component implements Initable
      *
      * @since 2.0.4
      */
-    public $numberFormatterSymbols = [];
+    protected $numberFormatterSymbols = [];
     /**
      * @var string the 3-letter ISO 4217 currency code indicating the default currency to use for [[asCurrency]].
      * If not set, the currency code corresponding to [[locale]] will be used.
      * Note that in this case the [[locale]] has to be specified with a country code, e.g. `en-US` otherwise it
      * is not possible to determine the default currency.
      */
-    public $currencyCode;
+    protected $currencyCode;
     /**
      * @var int the base at which a kilobyte is calculated (1000 or 1024 bytes per kilobyte), used by [[asSize]] and [[asShortSize]].
      * Defaults to 1024.
      */
-    public $sizeFormatBase = 1024;
+    protected $sizeFormatBase = 1024;
     /**
      * @var string default system of measure units. Defaults to [[UNIT_SYSTEM_METRIC]].
      * Possible values:
@@ -290,7 +290,7 @@ class Formatter extends Component implements Initable
      * @see asWeight
      * @since 2.0.13
      */
-    public $systemOfUnits = self::UNIT_SYSTEM_METRIC;
+    protected $systemOfUnits = self::UNIT_SYSTEM_METRIC;
     /**
      * @var array configuration of weight and length measurement units.
      * This array contains the most usable measurement units, but you can change it
@@ -307,7 +307,7 @@ class Formatter extends Component implements Initable
      * @see asWeight
      * @since 2.0.13
      */
-    public $measureUnits = [
+    protected $measureUnits = [
         self::UNIT_LENGTH => [
             self::UNIT_SYSTEM_IMPERIAL => [
                 'inch' => 1,
@@ -346,7 +346,7 @@ class Formatter extends Component implements Initable
      * @var array The base units that are used as multipliers for smallest possible unit from [[measureUnits]].
      * @since 2.0.13
      */
-    public $baseUnits = [
+    protected $baseUnits = [
         self::UNIT_LENGTH => [
             self::UNIT_SYSTEM_IMPERIAL => 12, // 1 feet = 12 inches
             self::UNIT_SYSTEM_METRIC => 1000, // 1 meter = 1000 millimeters
@@ -358,9 +358,329 @@ class Formatter extends Component implements Initable
     ];
 
     /**
+     * @return string
+     */
+    public function getNullDisplay(): string
+    {
+        if ($this->nullDisplay === null && $this->app !== null) {
+            $this->nullDisplay = '<span class="not-set">' . Yii::t('yii', '(not set)', [], $this->getLocale()) . '</span>';
+        }
+
+        return $this->nullDisplay;
+    }
+
+    /**
+     * @param string $nullDisplay
+     */
+    public function setNullDisplay(string $nullDisplay): void
+    {
+        $this->nullDisplay = $nullDisplay;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBooleanFormat(): array
+    {
+        if ($this->booleanFormat === null) {
+            $this->booleanFormat = [Yii::t('yii', 'No', [], $this->getLocale()), Yii::t('yii', 'Yes', [], $this->getLocale())];
+        }
+
+        return $this->booleanFormat;
+    }
+
+    /**
+     * @param array $booleanFormat
+     */
+    public function setBooleanFormat(array $booleanFormat): void
+    {
+        $this->booleanFormat = $booleanFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale(): string
+    {
+        if ($this->locale === null && $this->app !== null) {
+            $this->locale = $this->app->language;
+        }
+
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     */
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeZone(): string
+    {
+        if ($this->timeZone === null && $this->app !== null) {
+            $this->timeZone = $this->app->timeZone;
+        }
+
+        return $this->timeZone;
+    }
+
+    /**
+     * @param string $timeZone
+     */
+    public function setTimeZone(string $timeZone): void
+    {
+        $this->timeZone = $timeZone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultTimeZone(): string
+    {
+        return $this->defaultTimeZone;
+    }
+
+    /**
+     * @param string $defaultTimeZone
+     */
+    public function setDefaultTimeZone(string $defaultTimeZone): void
+    {
+        $this->defaultTimeZone = $defaultTimeZone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormat(): string
+    {
+        return $this->dateFormat;
+    }
+
+    /**
+     * @param string $dateFormat
+     */
+    public function setDateFormat(string $dateFormat): void
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeFormat(): string
+    {
+        return $this->timeFormat;
+    }
+
+    /**
+     * @param string $timeFormat
+     */
+    public function setTimeFormat(string $timeFormat): void
+    {
+        $this->timeFormat = $timeFormat;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatetimeFormat(): string
+    {
+        return $this->datetimeFormat;
+    }
+
+    /**
+     * @param string $datetimeFormat
+     */
+    public function setDatetimeFormat(string $datetimeFormat): void
+    {
+        $this->datetimeFormat = $datetimeFormat;
+    }
+
+    /**
+     * @return int|\IntlCalendar|null
+     */
+    public function getCalendar()
+    {
+        return $this->calendar;
+    }
+
+    /**
+     * @param int|\IntlCalendar|null $calendar
+     */
+    public function setCalendar($calendar): void
+    {
+        $this->calendar = $calendar;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDecimalSeparator(): string
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator(string $decimalSeparator): void
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThousandSeparator(): string
+    {
+        return $this->thousandSeparator;
+    }
+
+    /**
+     * @param string $thousandSeparator
+     */
+    public function setThousandSeparator(string $thousandSeparator): void
+    {
+        $this->thousandSeparator = $thousandSeparator;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNumberFormatterOptions(): array
+    {
+        return $this->numberFormatterOptions;
+    }
+
+    /**
+     * @param array $numberFormatterOptions
+     */
+    public function setNumberFormatterOptions(array $numberFormatterOptions): void
+    {
+        $this->numberFormatterOptions = $numberFormatterOptions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNumberFormatterTextOptions(): array
+    {
+        return $this->numberFormatterTextOptions;
+    }
+
+    /**
+     * @param array $numberFormatterTextOptions
+     */
+    public function setNumberFormatterTextOptions(array $numberFormatterTextOptions): void
+    {
+        $this->numberFormatterTextOptions = $numberFormatterTextOptions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNumberFormatterSymbols(): array
+    {
+        return $this->numberFormatterSymbols;
+    }
+
+    /**
+     * @param array $numberFormatterSymbols
+     */
+    public function setNumberFormatterSymbols(array $numberFormatterSymbols): void
+    {
+        $this->numberFormatterSymbols = $numberFormatterSymbols;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode(): string
+    {
+        return $this->currencyCode;
+    }
+
+    /**
+     * @param string $currencyCode
+     */
+    public function setCurrencyCode(string $currencyCode): void
+    {
+        $this->currencyCode = $currencyCode;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizeFormatBase(): int
+    {
+        return $this->sizeFormatBase;
+    }
+
+    /**
+     * @param int $sizeFormatBase
+     */
+    public function setSizeFormatBase(int $sizeFormatBase): void
+    {
+        $this->sizeFormatBase = $sizeFormatBase;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSystemOfUnits(): string
+    {
+        return $this->systemOfUnits;
+    }
+
+    /**
+     * @param string $systemOfUnits
+     */
+    public function setSystemOfUnits(string $systemOfUnits): void
+    {
+        $this->systemOfUnits = $systemOfUnits;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMeasureUnits(): array
+    {
+        return $this->measureUnits;
+    }
+
+    /**
+     * @param array $measureUnits
+     */
+    public function setMeasureUnits(array $measureUnits): void
+    {
+        $this->measureUnits = $measureUnits;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseUnits(): array
+    {
+        return $this->baseUnits;
+    }
+
+    /**
+     * @param array $baseUnits
+     */
+    public function setBaseUnits(array $baseUnits): void
+    {
+        $this->baseUnits = $baseUnits;
+    }
+
+    /**
      * @var bool whether the [PHP intl extension](http://php.net/manual/en/book.intl.php) is loaded.
      */
-    private $_intlLoaded = false;
+    private $intlLoaded = false;
     /**
      * @var \ResourceBundle cached ResourceBundle object used to read unit translations
      */
@@ -371,44 +691,21 @@ class Formatter extends Component implements Initable
     private $_unitMessages = [];
 
     /**
-     * @var \yii\base\Application
+     * @var Application
      */
-    private $app;
+    protected $app;
 
     /**
      * Formatter constructor.
-     * @param \yii\base\Application $app
+     * @param Application $app
      */
-    public function __construct(\yii\base\Application $app)
+    public function __construct(Application $app)
     {
-        $this->app = $app;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function init()
-    {
-        if ($this->timeZone === null) {
-            $this->timeZone = $this->app->timeZone;
-        }
-        if ($this->locale === null) {
-            $this->locale = $this->app->language;
-        }
-        if ($this->booleanFormat === null) {
-            $this->booleanFormat = [Yii::t('yii', 'No', [], $this->locale), Yii::t('yii', 'Yes', [], $this->locale)];
-        }
-        if ($this->nullDisplay === null) {
-            $this->nullDisplay = '<span class="not-set">' . Yii::t('yii', '(not set)', [], $this->locale) . '</span>';
-        }
-        $this->_intlLoaded = extension_loaded('intl');
-        if (!$this->_intlLoaded) {
-            if ($this->decimalSeparator === null) {
-                $this->decimalSeparator = '.';
-            }
-            if ($this->thousandSeparator === null) {
-                $this->thousandSeparator = ',';
-            }
+        $this->app        = $app;
+        $this->intlLoaded = extension_loaded('intl');
+        if (!$this->intlLoaded) {
+            $this->decimalSeparator = '.';
+            $this->thousandSeparator = ',';
         }
     }
 
@@ -437,7 +734,9 @@ class Formatter extends Component implements Initable
     {
         if ($format instanceof Closure) {
             return call_user_func($format, $value, $this);
-        } elseif (is_array($format)) {
+        }
+
+        if (is_array($format)) {
             if (!isset($format[0])) {
                 throw new InvalidArgumentException('The $format array must contain at least one element.');
             }
@@ -759,7 +1058,7 @@ class Formatter extends Component implements Initable
 
         // intl does not work with dates >=2038 or <=1901 on 32bit machines, fall back to PHP
         $year = $timestamp->format('Y');
-        if ($this->_intlLoaded && !(PHP_INT_SIZE === 4 && ($year <= 1901 || $year >= 2038))) {
+        if ($this->intlLoaded && !(PHP_INT_SIZE === 4 && ($year <= 1901 || $year >= 2038))) {
             if (strncmp($format, 'php:', 4) === 0) {
                 $format = FormatConverter::convertDatePhpToIcu(substr($format, 4));
             }
@@ -1073,7 +1372,7 @@ class Formatter extends Component implements Initable
             return $this->nullDisplay;
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::DECIMAL, null, $options, $textOptions);
             $f->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
             if (($result = $f->format($value, NumberFormatter::TYPE_INT64)) === false) {
@@ -1114,7 +1413,7 @@ class Formatter extends Component implements Initable
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::DECIMAL, $decimals, $options, $textOptions);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting decimal value failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1154,7 +1453,7 @@ class Formatter extends Component implements Initable
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::PERCENT, $decimals, $options, $textOptions);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting percent value failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1194,7 +1493,7 @@ class Formatter extends Component implements Initable
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::SCIENTIFIC, $decimals, $options, $textOptions);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting scientific number value failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1232,7 +1531,7 @@ class Formatter extends Component implements Initable
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $currency = $currency ?: $this->currencyCode;
             // currency code must be set before fraction digits
             // http://php.net/manual/en/numberformatter.formatcurrency.php#114376
@@ -1278,7 +1577,7 @@ class Formatter extends Component implements Initable
             return $this->nullDisplay;
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::SPELLOUT);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting number as spellout failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1306,7 +1605,7 @@ class Formatter extends Component implements Initable
             return $this->nullDisplay;
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->_intlLoaded) {
+        if ($this->intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::ORDINAL);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting number as ordinal failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1575,7 +1874,7 @@ class Formatter extends Component implements Initable
         if (isset($this->_unitMessages[$unitType][$system][$position])) {
             return $this->_unitMessages[$unitType][$system][$position];
         }
-        if (!$this->_intlLoaded) {
+        if (!$this->intlLoaded) {
             throw new InvalidConfigException('Format of ' . $unitType . ' is only supported when PHP intl extension is installed.');
         }
 
@@ -1656,7 +1955,7 @@ class Formatter extends Component implements Initable
         // disable grouping for edge cases like 1023 to get 1023 B instead of 1,023 B
         $oldThousandSeparator = $this->thousandSeparator;
         $this->thousandSeparator = '';
-        if ($this->_intlLoaded && !isset($options[NumberFormatter::GROUPING_USED])) {
+        if ($this->intlLoaded && !isset($options[NumberFormatter::GROUPING_USED])) {
             $options[NumberFormatter::GROUPING_USED] = false;
         }
         // format the size value
