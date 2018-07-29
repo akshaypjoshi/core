@@ -367,11 +367,11 @@ class Formatter extends Component
     }
 
     /**
-     * @param string $_nullDisplay
+     * @param string $nullDisplay
      */
-    public function setNullDisplay(string $_nullDisplay): void
+    public function setNullDisplay(string $nullDisplay): void
     {
-        $this->_nullDisplay = $_nullDisplay;
+        $this->_nullDisplay = $nullDisplay;
     }
 
     /**
@@ -387,11 +387,11 @@ class Formatter extends Component
     }
 
     /**
-     * @param array $_booleanFormat
+     * @param array $booleanFormat
      */
-    public function setBooleanFormat(array $_booleanFormat): void
+    public function setBooleanFormat(array $booleanFormat): void
     {
-        $this->_booleanFormat = $_booleanFormat;
+        $this->_booleanFormat = $booleanFormat;
     }
 
     /**
@@ -407,11 +407,11 @@ class Formatter extends Component
     }
 
     /**
-     * @param string $_locale
+     * @param string $locale
      */
-    public function setLocale(string $_locale): void
+    public function setLocale(string $locale): void
     {
-        $this->_locale = $_locale;
+        $this->_locale = $locale;
     }
 
     /**
@@ -427,11 +427,11 @@ class Formatter extends Component
     }
 
     /**
-     * @param string $_timeZone
+     * @param string $timeZone
      */
-    public function setTimeZone(string $_timeZone): void
+    public function setTimeZone(string $timeZone): void
     {
-        $this->_timeZone = $_timeZone;
+        $this->_timeZone = $timeZone;
     }
 
     /**
@@ -458,7 +458,7 @@ class Formatter extends Component
      */
     public function __construct(Application $app)
     {
-        $this->app         = $app;
+        $this->app = $app;
         $this->_intlLoaded = extension_loaded('intl');
         if (!$this->_intlLoaded) {
             $this->decimalSeparator = '.';
