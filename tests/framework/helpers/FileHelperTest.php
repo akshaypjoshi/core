@@ -23,6 +23,8 @@ class FileHelperTest extends TestCase
 
     public function setUp()
     {
+        parent::setUp();
+
         $this->testFilePath = $this->app->getAlias('@yii/tests/runtime') . DIRECTORY_SEPARATOR . get_class($this);
         $this->createDir($this->testFilePath);
         if (!file_exists($this->testFilePath)) {
@@ -32,8 +34,6 @@ class FileHelperTest extends TestCase
         if (!$this->isChmodReliable()) {
             $this->markTestInComplete('Unit tests runtime directory should be local!');
         }
-
-        parent::setUp();
 
         // destroy application, Helper must work without Yii::$app
         $this->destroyApplication();
