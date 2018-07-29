@@ -440,7 +440,7 @@ class Formatter extends Component
     /**
      * @var bool whether the [PHP intl extension](http://php.net/manual/en/book.intl.php) is loaded.
      */
-    private $intlLoaded = false;
+    private $_intlLoaded = false;
     /**
      * @var \ResourceBundle cached ResourceBundle object used to read unit translations
      */
@@ -461,9 +461,9 @@ class Formatter extends Component
      */
     public function __construct(Application $app)
     {
-        $this->app        = $app;
-        $this->intlLoaded = extension_loaded('intl');
-        if (!$this->intlLoaded) {
+        $this->app         = $app;
+        $this->_intlLoaded = extension_loaded('intl');
+        if (!$this->_intlLoaded) {
             $this->decimalSeparator = '.';
             $this->thousandSeparator = ',';
         }
@@ -818,7 +818,7 @@ class Formatter extends Component
 
         // intl does not work with dates >=2038 or <=1901 on 32bit machines, fall back to PHP
         $year = $timestamp->format('Y');
-        if ($this->intlLoaded && !(PHP_INT_SIZE === 4 && ($year <= 1901 || $year >= 2038))) {
+        if ($this->_intlLoaded && !(PHP_INT_SIZE === 4 && ($year <= 1901 || $year >= 2038))) {
             if (strncmp($format, 'php:', 4) === 0) {
                 $format = FormatConverter::convertDatePhpToIcu(substr($format, 4));
             }
@@ -1132,7 +1132,7 @@ class Formatter extends Component
             return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::DECIMAL, null, $options, $textOptions);
             $f->setAttribute(NumberFormatter::FRACTION_DIGITS, 0);
             if (($result = $f->format($value, NumberFormatter::TYPE_INT64)) === false) {
@@ -1173,7 +1173,7 @@ class Formatter extends Component
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::DECIMAL, $decimals, $options, $textOptions);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting decimal value failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1213,7 +1213,7 @@ class Formatter extends Component
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::PERCENT, $decimals, $options, $textOptions);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting percent value failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1253,7 +1253,7 @@ class Formatter extends Component
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::SCIENTIFIC, $decimals, $options, $textOptions);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting scientific number value failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1291,7 +1291,7 @@ class Formatter extends Component
         }
         $value = $this->normalizeNumericValue($value);
 
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $currency = $currency ?: $this->currencyCode;
             // currency code must be set before fraction digits
             // http://php.net/manual/en/numberformatter.formatcurrency.php#114376
@@ -1337,7 +1337,7 @@ class Formatter extends Component
             return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::SPELLOUT);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting number as spellout failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1365,7 +1365,7 @@ class Formatter extends Component
             return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
-        if ($this->intlLoaded) {
+        if ($this->_intlLoaded) {
             $f = $this->createNumberFormatter(NumberFormatter::ORDINAL);
             if (($result = $f->format($value)) === false) {
                 throw new InvalidArgumentException('Formatting number as ordinal failed: ' . $f->getErrorCode() . ' ' . $f->getErrorMessage());
@@ -1634,7 +1634,7 @@ class Formatter extends Component
         if (isset($this->_unitMessages[$unitType][$system][$position])) {
             return $this->_unitMessages[$unitType][$system][$position];
         }
-        if (!$this->intlLoaded) {
+        if (!$this->_intlLoaded) {
             throw new InvalidConfigException('Format of ' . $unitType . ' is only supported when PHP intl extension is installed.');
         }
 
@@ -1715,7 +1715,7 @@ class Formatter extends Component
         // disable grouping for edge cases like 1023 to get 1023 B instead of 1,023 B
         $oldThousandSeparator = $this->thousandSeparator;
         $this->thousandSeparator = '';
-        if ($this->intlLoaded && !isset($options[NumberFormatter::GROUPING_USED])) {
+        if ($this->_intlLoaded && !isset($options[NumberFormatter::GROUPING_USED])) {
             $options[NumberFormatter::GROUPING_USED] = false;
         }
         // format the size value
