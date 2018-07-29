@@ -78,21 +78,21 @@ class Formatter extends Component
      * Defaults to `'<span class="not-set">(not set)</span>'`, where `(not set)`
      * will be translated according to [[locale]].
      */
-    protected $nullDisplay;
+    protected $_nullDisplay;
     /**
      * @var array the text to be displayed when formatting a boolean value. The first element corresponds
      * to the text displayed for `false`, the second element for `true`.
      * Defaults to `['No', 'Yes']`, where `Yes` and `No`
      * will be translated according to [[locale]].
      */
-    protected $booleanFormat;
+    protected $_booleanFormat;
     /**
      * @var string the locale ID that is used to localize the date and number formatting.
      * For number and date formatting this is only effective when the
      * [PHP intl extension](http://php.net/manual/en/book.intl.php) is installed.
      * If not set, [[\yii\base\Application::language]] will be used.
      */
-    protected $locale;
+    protected $_locale;
     /**
      * @var string the time zone to use for formatting time and date values.
      *
@@ -104,7 +104,7 @@ class Formatter extends Component
      * Note that the default time zone for input data is assumed to be UTC by default if no time zone is included in the input date value.
      * If you store your data in a different time zone in the database, you have to adjust [[defaultTimeZone]] accordingly.
      */
-    protected $timeZone;
+    protected $_timeZone;
     /**
      * @var string the time zone that is assumed for input values if they do not include a time zone explicitly.
      *
@@ -118,7 +118,7 @@ class Formatter extends Component
      *
      * @since 2.0.1
      */
-    protected $defaultTimeZone = 'UTC';
+    public $defaultTimeZone = 'UTC';
     /**
      * @var string the default format string to be used to format a [[asDate()|date]].
      * This can be "short", "medium", "long", or "full", which represents a preset format of different lengths.
@@ -134,7 +134,7 @@ class Formatter extends Component
      * 'php:m/d/Y' // the same date in PHP format
      * ```
      */
-    protected $dateFormat = 'medium';
+    public $dateFormat = 'medium';
     /**
      * @var string the default format string to be used to format a [[asTime()|time]].
      * This can be "short", "medium", "long", or "full", which represents a preset format of different lengths.
@@ -150,7 +150,7 @@ class Formatter extends Component
      * 'php:H:i:s' // the same time in PHP format
      * ```
      */
-    protected $timeFormat = 'medium';
+    public $timeFormat = 'medium';
     /**
      * @var string the default format string to be used to format a [[asDatetime()|date and time]].
      * This can be "short", "medium", "long", or "full", which represents a preset format of different lengths.
@@ -167,7 +167,7 @@ class Formatter extends Component
      * 'php:m/d/Y H:i:s' // the same date and time in PHP format
      * ```
      */
-    protected $datetimeFormat = 'medium';
+    public $datetimeFormat = 'medium';
     /**
      * @var \IntlCalendar|int|null the calendar to be used for date formatting. The value of this property will be directly
      * passed to the [constructor of the `IntlDateFormatter` class](http://php.net/manual/en/intldateformatter.create.php).
@@ -198,19 +198,19 @@ class Formatter extends Component
      * @see http://php.net/manual/en/class.intlcalendar.php
      * @since 2.0.7
      */
-    protected $calendar;
+    public $calendar;
     /**
      * @var string the character displayed as the decimal point when formatting a number.
      * If not set, the decimal separator corresponding to [[locale]] will be used.
      * If [PHP intl extension](http://php.net/manual/en/book.intl.php) is not available, the default value is '.'.
      */
-    protected $decimalSeparator;
+    public $decimalSeparator;
     /**
      * @var string the character displayed as the thousands separator (also called grouping separator) character when formatting a number.
      * If not set, the thousand separator corresponding to [[locale]] will be used.
      * If [PHP intl extension](http://php.net/manual/en/book.intl.php) is not available, the default value is ','.
      */
-    protected $thousandSeparator;
+    public $thousandSeparator;
     /**
      * @var array a list of name value pairs that are passed to the
      * intl [NumberFormatter::setAttribute()](http://php.net/manual/en/numberformatter.setattribute.php) method of all
@@ -229,7 +229,7 @@ class Formatter extends Component
      * ]
      * ```
      */
-    protected $numberFormatterOptions = [];
+    public $numberFormatterOptions = [];
     /**
      * @var array a list of name value pairs that are passed to the
      * intl [NumberFormatter::setTextAttribute()](http://php.net/manual/en/numberformatter.settextattribute.php) method of all
@@ -247,7 +247,7 @@ class Formatter extends Component
      * ]
      * ```
      */
-    protected $numberFormatterTextOptions = [];
+    public $numberFormatterTextOptions = [];
     /**
      * @var array a list of name value pairs that are passed to the
      * intl [NumberFormatter::setSymbol()](http://php.net/manual/en/numberformatter.setsymbol.php) method of all
@@ -267,19 +267,19 @@ class Formatter extends Component
      *
      * @since 2.0.4
      */
-    protected $numberFormatterSymbols = [];
+    public $numberFormatterSymbols = [];
     /**
      * @var string the 3-letter ISO 4217 currency code indicating the default currency to use for [[asCurrency]].
      * If not set, the currency code corresponding to [[locale]] will be used.
      * Note that in this case the [[locale]] has to be specified with a country code, e.g. `en-US` otherwise it
      * is not possible to determine the default currency.
      */
-    protected $currencyCode;
+    public $currencyCode;
     /**
      * @var int the base at which a kilobyte is calculated (1000 or 1024 bytes per kilobyte), used by [[asSize]] and [[asShortSize]].
      * Defaults to 1024.
      */
-    protected $sizeFormatBase = 1024;
+    public $sizeFormatBase = 1024;
     /**
      * @var string default system of measure units. Defaults to [[UNIT_SYSTEM_METRIC]].
      * Possible values:
@@ -290,7 +290,7 @@ class Formatter extends Component
      * @see asWeight
      * @since 2.0.13
      */
-    protected $systemOfUnits = self::UNIT_SYSTEM_METRIC;
+    public $systemOfUnits = self::UNIT_SYSTEM_METRIC;
     /**
      * @var array configuration of weight and length measurement units.
      * This array contains the most usable measurement units, but you can change it
@@ -307,7 +307,7 @@ class Formatter extends Component
      * @see asWeight
      * @since 2.0.13
      */
-    protected $measureUnits = [
+    public $measureUnits = [
         self::UNIT_LENGTH => [
             self::UNIT_SYSTEM_IMPERIAL => [
                 'inch' => 1,
@@ -346,7 +346,7 @@ class Formatter extends Component
      * @var array The base units that are used as multipliers for smallest possible unit from [[measureUnits]].
      * @since 2.0.13
      */
-    protected $baseUnits = [
+    public $baseUnits = [
         self::UNIT_LENGTH => [
             self::UNIT_SYSTEM_IMPERIAL => 12, // 1 feet = 12 inches
             self::UNIT_SYSTEM_METRIC => 1000, // 1 meter = 1000 millimeters
@@ -362,19 +362,19 @@ class Formatter extends Component
      */
     public function getNullDisplay(): string
     {
-        if ($this->nullDisplay === null && $this->app !== null) {
-            $this->nullDisplay = '<span class="not-set">' . Yii::t('yii', '(not set)', [], $this->getLocale()) . '</span>';
+        if ($this->_nullDisplay === null) {
+            $this->_nullDisplay = '<span class="not-set">' . Yii::t('yii', '(not set)', [], $this->getLocale()) . '</span>';
         }
 
-        return $this->nullDisplay;
+        return $this->_nullDisplay;
     }
 
     /**
-     * @param string $nullDisplay
+     * @param string $_nullDisplay
      */
-    public function setNullDisplay(string $nullDisplay): void
+    public function setNullDisplay(string $_nullDisplay): void
     {
-        $this->nullDisplay = $nullDisplay;
+        $this->_nullDisplay = $_nullDisplay;
     }
 
     /**
@@ -382,19 +382,19 @@ class Formatter extends Component
      */
     public function getBooleanFormat(): array
     {
-        if ($this->booleanFormat === null) {
-            $this->booleanFormat = [Yii::t('yii', 'No', [], $this->getLocale()), Yii::t('yii', 'Yes', [], $this->getLocale())];
+        if ($this->_booleanFormat === null) {
+            $this->_booleanFormat = [Yii::t('yii', 'No', [], $this->getLocale()), Yii::t('yii', 'Yes', [], $this->getLocale())];
         }
 
-        return $this->booleanFormat;
+        return $this->_booleanFormat;
     }
 
     /**
-     * @param array $booleanFormat
+     * @param array $_booleanFormat
      */
-    public function setBooleanFormat(array $booleanFormat): void
+    public function setBooleanFormat(array $_booleanFormat): void
     {
-        $this->booleanFormat = $booleanFormat;
+        $this->_booleanFormat = $_booleanFormat;
     }
 
     /**
@@ -402,19 +402,19 @@ class Formatter extends Component
      */
     public function getLocale(): string
     {
-        if ($this->locale === null && $this->app !== null) {
-            $this->locale = $this->app->language;
+        if ($this->_locale === null && $this->app !== null) {
+            $this->_locale = $this->app->language;
         }
 
-        return $this->locale;
+        return $this->_locale;
     }
 
     /**
-     * @param string $locale
+     * @param string $_locale
      */
-    public function setLocale(string $locale): void
+    public function setLocale(string $_locale): void
     {
-        $this->locale = $locale;
+        $this->_locale = $_locale;
     }
 
     /**
@@ -422,259 +422,19 @@ class Formatter extends Component
      */
     public function getTimeZone(): string
     {
-        if ($this->timeZone === null && $this->app !== null) {
-            $this->timeZone = $this->app->timeZone;
+        if ($this->_timeZone === null && $this->app !== null) {
+            $this->_timeZone = $this->app->timeZone;
         }
 
-        return $this->timeZone;
+        return $this->_timeZone;
     }
 
     /**
-     * @param string $timeZone
+     * @param string $_timeZone
      */
-    public function setTimeZone(string $timeZone): void
+    public function setTimeZone(string $_timeZone): void
     {
-        $this->timeZone = $timeZone;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultTimeZone(): string
-    {
-        return $this->defaultTimeZone;
-    }
-
-    /**
-     * @param string $defaultTimeZone
-     */
-    public function setDefaultTimeZone(string $defaultTimeZone): void
-    {
-        $this->defaultTimeZone = $defaultTimeZone;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDateFormat(): string
-    {
-        return $this->dateFormat;
-    }
-
-    /**
-     * @param string $dateFormat
-     */
-    public function setDateFormat(string $dateFormat): void
-    {
-        $this->dateFormat = $dateFormat;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTimeFormat(): string
-    {
-        return $this->timeFormat;
-    }
-
-    /**
-     * @param string $timeFormat
-     */
-    public function setTimeFormat(string $timeFormat): void
-    {
-        $this->timeFormat = $timeFormat;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDatetimeFormat(): string
-    {
-        return $this->datetimeFormat;
-    }
-
-    /**
-     * @param string $datetimeFormat
-     */
-    public function setDatetimeFormat(string $datetimeFormat): void
-    {
-        $this->datetimeFormat = $datetimeFormat;
-    }
-
-    /**
-     * @return int|\IntlCalendar|null
-     */
-    public function getCalendar()
-    {
-        return $this->calendar;
-    }
-
-    /**
-     * @param int|\IntlCalendar|null $calendar
-     */
-    public function setCalendar($calendar): void
-    {
-        $this->calendar = $calendar;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDecimalSeparator(): string
-    {
-        return $this->decimalSeparator;
-    }
-
-    /**
-     * @param string $decimalSeparator
-     */
-    public function setDecimalSeparator(string $decimalSeparator): void
-    {
-        $this->decimalSeparator = $decimalSeparator;
-    }
-
-    /**
-     * @return string
-     */
-    public function getThousandSeparator(): string
-    {
-        return $this->thousandSeparator;
-    }
-
-    /**
-     * @param string $thousandSeparator
-     */
-    public function setThousandSeparator(string $thousandSeparator): void
-    {
-        $this->thousandSeparator = $thousandSeparator;
-    }
-
-    /**
-     * @return array
-     */
-    public function getNumberFormatterOptions(): array
-    {
-        return $this->numberFormatterOptions;
-    }
-
-    /**
-     * @param array $numberFormatterOptions
-     */
-    public function setNumberFormatterOptions(array $numberFormatterOptions): void
-    {
-        $this->numberFormatterOptions = $numberFormatterOptions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getNumberFormatterTextOptions(): array
-    {
-        return $this->numberFormatterTextOptions;
-    }
-
-    /**
-     * @param array $numberFormatterTextOptions
-     */
-    public function setNumberFormatterTextOptions(array $numberFormatterTextOptions): void
-    {
-        $this->numberFormatterTextOptions = $numberFormatterTextOptions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getNumberFormatterSymbols(): array
-    {
-        return $this->numberFormatterSymbols;
-    }
-
-    /**
-     * @param array $numberFormatterSymbols
-     */
-    public function setNumberFormatterSymbols(array $numberFormatterSymbols): void
-    {
-        $this->numberFormatterSymbols = $numberFormatterSymbols;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCurrencyCode(): string
-    {
-        return $this->currencyCode;
-    }
-
-    /**
-     * @param string $currencyCode
-     */
-    public function setCurrencyCode(string $currencyCode): void
-    {
-        $this->currencyCode = $currencyCode;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSizeFormatBase(): int
-    {
-        return $this->sizeFormatBase;
-    }
-
-    /**
-     * @param int $sizeFormatBase
-     */
-    public function setSizeFormatBase(int $sizeFormatBase): void
-    {
-        $this->sizeFormatBase = $sizeFormatBase;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSystemOfUnits(): string
-    {
-        return $this->systemOfUnits;
-    }
-
-    /**
-     * @param string $systemOfUnits
-     */
-    public function setSystemOfUnits(string $systemOfUnits): void
-    {
-        $this->systemOfUnits = $systemOfUnits;
-    }
-
-    /**
-     * @return array
-     */
-    public function getMeasureUnits(): array
-    {
-        return $this->measureUnits;
-    }
-
-    /**
-     * @param array $measureUnits
-     */
-    public function setMeasureUnits(array $measureUnits): void
-    {
-        $this->measureUnits = $measureUnits;
-    }
-
-    /**
-     * @return array
-     */
-    public function getBaseUnits(): array
-    {
-        return $this->baseUnits;
-    }
-
-    /**
-     * @param array $baseUnits
-     */
-    public function setBaseUnits(array $baseUnits): void
-    {
-        $this->baseUnits = $baseUnits;
+        $this->_timeZone = $_timeZone;
     }
 
     /**
@@ -769,7 +529,7 @@ class Formatter extends Component
     public function asRaw($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return $value;
@@ -783,7 +543,7 @@ class Formatter extends Component
     public function asText($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return Html::encode($value);
@@ -797,7 +557,7 @@ class Formatter extends Component
     public function asNtext($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return nl2br(Html::encode($value));
@@ -813,7 +573,7 @@ class Formatter extends Component
     public function asParagraphs($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return str_replace('<p></p>', '', '<p>' . preg_replace('/\R{2,}/u', "</p>\n<p>", Html::encode($value)) . '</p>');
@@ -830,7 +590,7 @@ class Formatter extends Component
     public function asHtml($value, $config = null)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return HtmlPurifier::process($value, $config);
@@ -845,7 +605,7 @@ class Formatter extends Component
     public function asEmail($value, $options = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return Html::mailto(Html::encode($value), $value, $options);
@@ -860,7 +620,7 @@ class Formatter extends Component
     public function asImage($value, $options = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         return Html::img($value, $options);
@@ -875,7 +635,7 @@ class Formatter extends Component
     public function asUrl($value, $options = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $url = $value;
         if (strpos($url, '://') === false) {
@@ -889,15 +649,15 @@ class Formatter extends Component
      * Formats the value as a boolean.
      * @param mixed $value the value to be formatted.
      * @return string the formatted result.
-     * @see booleanFormat
+     * @see _booleanFormat
      */
     public function asBoolean($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
-        return $value ? $this->booleanFormat[1] : $this->booleanFormat[0];
+        return $value ? $this->_booleanFormat[1] : $this->_booleanFormat[0];
     }
 
 
@@ -1042,7 +802,7 @@ class Formatter extends Component
      */
     private function formatDateTimeValue($value, $format, $type)
     {
-        $timeZone = $this->timeZone;
+        $timeZone = $this->_timeZone;
         // avoid time zone conversion for date-only and time-only values
         if ($type === 'date' || $type === 'time') {
             [$timestamp, $hasTimeInfo, $hasDateInfo] = $this->normalizeDatetimeValue($value, true);
@@ -1053,7 +813,7 @@ class Formatter extends Component
             $timestamp = $this->normalizeDatetimeValue($value);
         }
         if ($timestamp === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         // intl does not work with dates >=2038 or <=1901 on 32bit machines, fall back to PHP
@@ -1064,14 +824,14 @@ class Formatter extends Component
             }
             if (isset($this->_dateFormats[$format])) {
                 if ($type === 'date') {
-                    $formatter = new IntlDateFormatter($this->locale, $this->_dateFormats[$format], IntlDateFormatter::NONE, $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->_locale, $this->_dateFormats[$format], IntlDateFormatter::NONE, $timeZone, $this->calendar);
                 } elseif ($type === 'time') {
-                    $formatter = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, $this->_dateFormats[$format], $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->_locale, IntlDateFormatter::NONE, $this->_dateFormats[$format], $timeZone, $this->calendar);
                 } else {
-                    $formatter = new IntlDateFormatter($this->locale, $this->_dateFormats[$format], $this->_dateFormats[$format], $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->_locale, $this->_dateFormats[$format], $this->_dateFormats[$format], $timeZone, $this->calendar);
                 }
             } else {
-                $formatter = new IntlDateFormatter($this->locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE, $timeZone, $this->calendar, $format);
+                $formatter = new IntlDateFormatter($this->_locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE, $timeZone, $this->calendar, $format);
             }
             if ($formatter === null) {
                 throw new InvalidConfigException(intl_get_error_message());
@@ -1087,7 +847,7 @@ class Formatter extends Component
         if (strncmp($format, 'php:', 4) === 0) {
             $format = substr($format, 4);
         } else {
-            $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->locale);
+            $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->_locale);
         }
         if ($timeZone != null) {
             if ($timestamp instanceof \DateTimeImmutable) {
@@ -1176,7 +936,7 @@ class Formatter extends Component
     public function asTimestamp($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $timestamp = $this->normalizeDatetimeValue($value);
         return number_format($timestamp->format('U'), 0, '.', '');
@@ -1208,7 +968,7 @@ class Formatter extends Component
     public function asRelativeTime($value, $referenceTime = null)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         if ($value instanceof DateInterval) {
@@ -1223,10 +983,10 @@ class Formatter extends Component
                     $interval = new DateInterval($value);
                 } catch (\Exception $e) {
                     // invalid date/time and invalid interval
-                    return $this->nullDisplay;
+                    return $this->getNullDisplay();
                 }
             } else {
-                $timeZone = new DateTimeZone($this->timeZone);
+                $timeZone = new DateTimeZone($this->_timeZone);
 
                 if ($referenceTime === null) {
                     $dateNow = new DateTime('now', $timeZone);
@@ -1243,47 +1003,47 @@ class Formatter extends Component
 
         if ($interval->invert) {
             if ($interval->y >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y], $this->_locale);
             }
             if ($interval->m >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m], $this->_locale);
             }
             if ($interval->d >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d], $this->_locale);
             }
             if ($interval->h >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h], $this->_locale);
             }
             if ($interval->i >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i], $this->_locale);
             }
             if ($interval->s == 0) {
-                return Yii::t('yii', 'just now', [], $this->locale);
+                return Yii::t('yii', 'just now', [], $this->_locale);
             }
 
-            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
+            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s], $this->_locale);
         }
 
         if ($interval->y >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y], $this->_locale);
         }
         if ($interval->m >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m], $this->_locale);
         }
         if ($interval->d >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d], $this->_locale);
         }
         if ($interval->h >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h], $this->_locale);
         }
         if ($interval->i >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i], $this->locale);
+            return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i], $this->_locale);
         }
         if ($interval->s == 0) {
-            return Yii::t('yii', 'just now', [], $this->locale);
+            return Yii::t('yii', 'just now', [], $this->_locale);
         }
 
-        return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s], $this->locale);
+        return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s], $this->_locale);
     }
 
     /**
@@ -1307,7 +1067,7 @@ class Formatter extends Component
     public function asDuration($value, $implodeString = ', ', $negativeSign = '-')
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         if ($value instanceof DateInterval) {
@@ -1328,29 +1088,29 @@ class Formatter extends Component
 
         $parts = [];
         if ($interval->y > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->_locale);
         }
         if ($interval->m > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->_locale);
         }
         if ($interval->d > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->_locale);
         }
         if ($interval->h > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->_locale);
         }
         if ($interval->i > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->_locale);
         }
         if ($interval->s > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->_locale);
         }
         if ($interval->s === 0 && empty($parts)) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->_locale);
             $isNegative = false;
         }
 
-        return empty($parts) ? $this->nullDisplay : (($isNegative ? $negativeSign : '') . implode($implodeString, $parts));
+        return empty($parts) ? $this->getNullDisplay() : (($isNegative ? $negativeSign : '') . implode($implodeString, $parts));
     }
 
 
@@ -1369,7 +1129,7 @@ class Formatter extends Component
     public function asInteger($value, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
         if ($this->intlLoaded) {
@@ -1409,7 +1169,7 @@ class Formatter extends Component
     public function asDecimal($value, $decimals = null, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
 
@@ -1449,7 +1209,7 @@ class Formatter extends Component
     public function asPercent($value, $decimals = null, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
 
@@ -1489,7 +1249,7 @@ class Formatter extends Component
     public function asScientific($value, $decimals = null, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
 
@@ -1527,7 +1287,7 @@ class Formatter extends Component
     public function asCurrency($value, $currency = null, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
 
@@ -1574,7 +1334,7 @@ class Formatter extends Component
     public function asSpellout($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
         if ($this->intlLoaded) {
@@ -1602,7 +1362,7 @@ class Formatter extends Component
     public function asOrdinal($value)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         $value = $this->normalizeNumericValue($value);
         if ($this->intlLoaded) {
@@ -1637,7 +1397,7 @@ class Formatter extends Component
     public function asShortSize($value, $decimals = null, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         [$params, $position] = $this->formatNumber($value, $decimals, 4, $this->sizeFormatBase, $options, $textOptions);
@@ -1645,32 +1405,32 @@ class Formatter extends Component
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} B', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} B', $params, $this->_locale);
                 case 1:
-                    return Yii::t('yii', '{nFormatted} KiB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} KiB', $params, $this->_locale);
                 case 2:
-                    return Yii::t('yii', '{nFormatted} MiB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} MiB', $params, $this->_locale);
                 case 3:
-                    return Yii::t('yii', '{nFormatted} GiB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} GiB', $params, $this->_locale);
                 case 4:
-                    return Yii::t('yii', '{nFormatted} TiB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} TiB', $params, $this->_locale);
                 default:
-                    return Yii::t('yii', '{nFormatted} PiB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} PiB', $params, $this->_locale);
             }
         } else {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} B', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} B', $params, $this->_locale);
                 case 1:
-                    return Yii::t('yii', '{nFormatted} KB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} KB', $params, $this->_locale);
                 case 2:
-                    return Yii::t('yii', '{nFormatted} MB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} MB', $params, $this->_locale);
                 case 3:
-                    return Yii::t('yii', '{nFormatted} GB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} GB', $params, $this->_locale);
                 case 4:
-                    return Yii::t('yii', '{nFormatted} TB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} TB', $params, $this->_locale);
                 default:
-                    return Yii::t('yii', '{nFormatted} PB', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} PB', $params, $this->_locale);
             }
         }
     }
@@ -1693,7 +1453,7 @@ class Formatter extends Component
     public function asSize($value, $decimals = null, $options = [], $textOptions = [])
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
 
         [$params, $position] = $this->formatNumber($value, $decimals, 4, $this->sizeFormatBase, $options, $textOptions);
@@ -1701,32 +1461,32 @@ class Formatter extends Component
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->_locale);
                 case 1:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params, $this->_locale);
                 case 2:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params, $this->_locale);
                 case 3:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params, $this->_locale);
                 case 4:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params, $this->_locale);
                 default:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params, $this->_locale);
             }
         } else {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->_locale);
                 case 1:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params, $this->_locale);
                 case 2:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params, $this->_locale);
                 case 3:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params, $this->_locale);
                 case 4:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params, $this->_locale);
                 default:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params, $this->locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params, $this->_locale);
             }
         }
     }
@@ -1833,7 +1593,7 @@ class Formatter extends Component
     private function formatUnit($unitType, $unitFormat, $value, $baseUnit, $unitSystem, $decimals, $options, $textOptions)
     {
         if ($value === null) {
-            return $this->nullDisplay;
+            return $this->getNullDisplay();
         }
         if ($unitSystem === null) {
             $unitSystem = $this->systemOfUnits;
@@ -1855,7 +1615,7 @@ class Formatter extends Component
 
         $message = $this->getUnitMessage($unitType, $unitFormat, $unitSystem, $position);
 
-        return (new \MessageFormatter($this->locale, $message))->format([
+        return (new \MessageFormatter($this->_locale, $message))->format([
             '0' => $params['nFormatted'],
             'n' => $params['n'],
         ]);
@@ -1880,7 +1640,7 @@ class Formatter extends Component
 
         if ($this->_resourceBundle === null) {
             try {
-                $this->_resourceBundle = new \ResourceBundle($this->locale, 'ICUDATA-unit');
+                $this->_resourceBundle = new \ResourceBundle($this->_locale, 'ICUDATA-unit');
             } catch (\IntlException $e) {
                 throw new InvalidConfigException('Current ICU data does not contain information about measure units. Check system requirements.');
             }
@@ -2014,7 +1774,7 @@ class Formatter extends Component
      */
     protected function createNumberFormatter($style, $decimals = null, $options = [], $textOptions = [])
     {
-        $formatter = new NumberFormatter($this->locale, $style);
+        $formatter = new NumberFormatter($this->_locale, $style);
 
         // set text attributes
         foreach ($this->numberFormatterTextOptions as $name => $attribute) {
