@@ -646,7 +646,7 @@ class Formatter extends Component
      * Formats the value as a boolean.
      * @param mixed $value the value to be formatted.
      * @return string the formatted result.
-     * @see _booleanFormat
+     * @see booleanFormat
      */
     public function asBoolean($value)
     {
@@ -654,7 +654,7 @@ class Formatter extends Component
             return $this->getNullDisplay();
         }
 
-        return $value ? $this->_booleanFormat[1] : $this->_booleanFormat[0];
+        return $value ? $this->getBooleanFormat()[1] : $this->getBooleanFormat()[0];
     }
 
 
@@ -799,7 +799,7 @@ class Formatter extends Component
      */
     private function formatDateTimeValue($value, $format, $type)
     {
-        $timeZone = $this->_timeZone;
+        $timeZone = $this->getTimeZone();
         // avoid time zone conversion for date-only and time-only values
         if ($type === 'date' || $type === 'time') {
             [$timestamp, $hasTimeInfo, $hasDateInfo] = $this->normalizeDatetimeValue($value, true);
@@ -821,14 +821,14 @@ class Formatter extends Component
             }
             if (isset($this->_dateFormats[$format])) {
                 if ($type === 'date') {
-                    $formatter = new IntlDateFormatter($this->_locale, $this->_dateFormats[$format], IntlDateFormatter::NONE, $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->getLocale(), $this->_dateFormats[$format], IntlDateFormatter::NONE, $timeZone, $this->calendar);
                 } elseif ($type === 'time') {
-                    $formatter = new IntlDateFormatter($this->_locale, IntlDateFormatter::NONE, $this->_dateFormats[$format], $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->getLocale(), IntlDateFormatter::NONE, $this->_dateFormats[$format], $timeZone, $this->calendar);
                 } else {
-                    $formatter = new IntlDateFormatter($this->_locale, $this->_dateFormats[$format], $this->_dateFormats[$format], $timeZone, $this->calendar);
+                    $formatter = new IntlDateFormatter($this->getLocale(), $this->_dateFormats[$format], $this->_dateFormats[$format], $timeZone, $this->calendar);
                 }
             } else {
-                $formatter = new IntlDateFormatter($this->_locale, IntlDateFormatter::NONE, IntlDateFormatter::NONE, $timeZone, $this->calendar, $format);
+                $formatter = new IntlDateFormatter($this->getLocale(), IntlDateFormatter::NONE, IntlDateFormatter::NONE, $timeZone, $this->calendar, $format);
             }
             if ($formatter === null) {
                 throw new InvalidConfigException(intl_get_error_message());
@@ -844,7 +844,7 @@ class Formatter extends Component
         if (strncmp($format, 'php:', 4) === 0) {
             $format = substr($format, 4);
         } else {
-            $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->_locale);
+            $format = FormatConverter::convertDateIcuToPhp($format, $type, $this->getLocale());
         }
         if ($timeZone != null) {
             if ($timestamp instanceof \DateTimeImmutable) {
@@ -983,7 +983,7 @@ class Formatter extends Component
                     return $this->getNullDisplay();
                 }
             } else {
-                $timeZone = new DateTimeZone($this->_timeZone);
+                $timeZone = new DateTimeZone($this->getTimeZone());
 
                 if ($referenceTime === null) {
                     $dateNow = new DateTime('now', $timeZone);
@@ -1000,47 +1000,47 @@ class Formatter extends Component
 
         if ($interval->invert) {
             if ($interval->y >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y], $this->_locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a year} other{# years}}', ['delta' => $interval->y], $this->getLocale());
             }
             if ($interval->m >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m], $this->_locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a month} other{# months}}', ['delta' => $interval->m], $this->getLocale());
             }
             if ($interval->d >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d], $this->_locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a day} other{# days}}', ['delta' => $interval->d], $this->getLocale());
             }
             if ($interval->h >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h], $this->_locale);
+                return Yii::t('yii', 'in {delta, plural, =1{an hour} other{# hours}}', ['delta' => $interval->h], $this->getLocale());
             }
             if ($interval->i >= 1) {
-                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i], $this->_locale);
+                return Yii::t('yii', 'in {delta, plural, =1{a minute} other{# minutes}}', ['delta' => $interval->i], $this->getLocale());
             }
             if ($interval->s == 0) {
-                return Yii::t('yii', 'just now', [], $this->_locale);
+                return Yii::t('yii', 'just now', [], $this->getLocale());
             }
 
-            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s], $this->_locale);
+            return Yii::t('yii', 'in {delta, plural, =1{a second} other{# seconds}}', ['delta' => $interval->s], $this->getLocale());
         }
 
         if ($interval->y >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y], $this->_locale);
+            return Yii::t('yii', '{delta, plural, =1{a year} other{# years}} ago', ['delta' => $interval->y], $this->getLocale());
         }
         if ($interval->m >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m], $this->_locale);
+            return Yii::t('yii', '{delta, plural, =1{a month} other{# months}} ago', ['delta' => $interval->m], $this->getLocale());
         }
         if ($interval->d >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d], $this->_locale);
+            return Yii::t('yii', '{delta, plural, =1{a day} other{# days}} ago', ['delta' => $interval->d], $this->getLocale());
         }
         if ($interval->h >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h], $this->_locale);
+            return Yii::t('yii', '{delta, plural, =1{an hour} other{# hours}} ago', ['delta' => $interval->h], $this->getLocale());
         }
         if ($interval->i >= 1) {
-            return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i], $this->_locale);
+            return Yii::t('yii', '{delta, plural, =1{a minute} other{# minutes}} ago', ['delta' => $interval->i], $this->getLocale());
         }
         if ($interval->s == 0) {
-            return Yii::t('yii', 'just now', [], $this->_locale);
+            return Yii::t('yii', 'just now', [], $this->getLocale());
         }
 
-        return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s], $this->_locale);
+        return Yii::t('yii', '{delta, plural, =1{a second} other{# seconds}} ago', ['delta' => $interval->s], $this->getLocale());
     }
 
     /**
@@ -1085,25 +1085,25 @@ class Formatter extends Component
 
         $parts = [];
         if ($interval->y > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 year} other{# years}}', ['delta' => $interval->y], $this->getLocale());
         }
         if ($interval->m > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 month} other{# months}}', ['delta' => $interval->m], $this->getLocale());
         }
         if ($interval->d > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 day} other{# days}}', ['delta' => $interval->d], $this->getLocale());
         }
         if ($interval->h > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 hour} other{# hours}}', ['delta' => $interval->h], $this->getLocale());
         }
         if ($interval->i > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 minute} other{# minutes}}', ['delta' => $interval->i], $this->getLocale());
         }
         if ($interval->s > 0) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->getLocale());
         }
         if ($interval->s === 0 && empty($parts)) {
-            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->_locale);
+            $parts[] = Yii::t('yii', '{delta, plural, =1{1 second} other{# seconds}}', ['delta' => $interval->s], $this->getLocale());
             $isNegative = false;
         }
 
@@ -1402,32 +1402,32 @@ class Formatter extends Component
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} B', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} B', $params, $this->getLocale());
                 case 1:
-                    return Yii::t('yii', '{nFormatted} KiB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} KiB', $params, $this->getLocale());
                 case 2:
-                    return Yii::t('yii', '{nFormatted} MiB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} MiB', $params, $this->getLocale());
                 case 3:
-                    return Yii::t('yii', '{nFormatted} GiB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} GiB', $params, $this->getLocale());
                 case 4:
-                    return Yii::t('yii', '{nFormatted} TiB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} TiB', $params, $this->getLocale());
                 default:
-                    return Yii::t('yii', '{nFormatted} PiB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} PiB', $params, $this->getLocale());
             }
         } else {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} B', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} B', $params, $this->getLocale());
                 case 1:
-                    return Yii::t('yii', '{nFormatted} KB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} KB', $params, $this->getLocale());
                 case 2:
-                    return Yii::t('yii', '{nFormatted} MB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} MB', $params, $this->getLocale());
                 case 3:
-                    return Yii::t('yii', '{nFormatted} GB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} GB', $params, $this->getLocale());
                 case 4:
-                    return Yii::t('yii', '{nFormatted} TB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} TB', $params, $this->getLocale());
                 default:
-                    return Yii::t('yii', '{nFormatted} PB', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} PB', $params, $this->getLocale());
             }
         }
     }
@@ -1458,32 +1458,32 @@ class Formatter extends Component
         if ($this->sizeFormatBase == 1024) {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->getLocale());
                 case 1:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kibibyte} other{kibibytes}}', $params, $this->getLocale());
                 case 2:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{mebibyte} other{mebibytes}}', $params, $this->getLocale());
                 case 3:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gibibyte} other{gibibytes}}', $params, $this->getLocale());
                 case 4:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{tebibyte} other{tebibytes}}', $params, $this->getLocale());
                 default:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{pebibyte} other{pebibytes}}', $params, $this->getLocale());
             }
         } else {
             switch ($position) {
                 case 0:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{byte} other{bytes}}', $params, $this->getLocale());
                 case 1:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{kilobyte} other{kilobytes}}', $params, $this->getLocale());
                 case 2:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{megabyte} other{megabytes}}', $params, $this->getLocale());
                 case 3:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{gigabyte} other{gigabytes}}', $params, $this->getLocale());
                 case 4:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{terabyte} other{terabytes}}', $params, $this->getLocale());
                 default:
-                    return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params, $this->_locale);
+                    return Yii::t('yii', '{nFormatted} {n, plural, =1{petabyte} other{petabytes}}', $params, $this->getLocale());
             }
         }
     }
@@ -1612,7 +1612,7 @@ class Formatter extends Component
 
         $message = $this->getUnitMessage($unitType, $unitFormat, $unitSystem, $position);
 
-        return (new \MessageFormatter($this->_locale, $message))->format([
+        return (new \MessageFormatter($this->getLocale(), $message))->format([
             '0' => $params['nFormatted'],
             'n' => $params['n'],
         ]);
@@ -1637,7 +1637,7 @@ class Formatter extends Component
 
         if ($this->_resourceBundle === null) {
             try {
-                $this->_resourceBundle = new \ResourceBundle($this->_locale, 'ICUDATA-unit');
+                $this->_resourceBundle = new \ResourceBundle($this->getLocale(), 'ICUDATA-unit');
             } catch (\IntlException $e) {
                 throw new InvalidConfigException('Current ICU data does not contain information about measure units. Check system requirements.');
             }
@@ -1771,7 +1771,7 @@ class Formatter extends Component
      */
     protected function createNumberFormatter($style, $decimals = null, $options = [], $textOptions = [])
     {
-        $formatter = new NumberFormatter($this->_locale, $style);
+        $formatter = new NumberFormatter($this->getLocale(), $style);
 
         // set text attributes
         foreach ($this->numberFormatterTextOptions as $name => $attribute) {
