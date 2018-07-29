@@ -30,9 +30,6 @@ use yii\helpers\HtmlPurifier;
  * The behavior of some of them may be configured via the properties of Formatter. For example,
  * by configuring [[dateFormat]], one may control how [[asDate()]] formats the value into a date string.
  *
- * Formatter is configured as an application component in [[\yii\base\Application]] by default.
- * You can access that instance via `Yii::getApp()->formatter`.
- *
  * The Formatter class is designed to format values according to a [[locale]]. For this feature to work
  * the [PHP intl extension](http://php.net/manual/en/book.intl.php) has to be installed.
  * Most of the methods however work also if the PHP intl extension is not installed by providing
